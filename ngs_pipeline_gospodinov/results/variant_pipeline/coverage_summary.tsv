@@ -1,0 +1,15 @@
+Metric	Value
+Reference	Wildtype
+Reference length (bp)	197394
+Mean depth (x)	18.9468
+Bases covered >=1x	180650
+Breadth >=1x (%)	91.5175
+Bases covered >=10x	179213
+Breadth >=10x (%)	90.7895
+Bases covered >=20x	98372
+Breadth >=20x (%)	49.8354
+Bases below 1x	16744
+Bases below 10x	18181
+Bases below 20x	99022
+Low-coverage threshold (x)	10
+Low-coverage regions	67

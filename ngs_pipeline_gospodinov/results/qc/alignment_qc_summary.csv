@@ -1,0 +1,3 @@
+read,total_reads,mapped_reads,unmapped_reads,mapping_rate,mapq30_reads,mapq30_among_mapped,all_n_reads
+R1,50000,49702,298,99.404,46886,94.334,0
+R2,50000,49172,828,98.344,46374,94.31,318

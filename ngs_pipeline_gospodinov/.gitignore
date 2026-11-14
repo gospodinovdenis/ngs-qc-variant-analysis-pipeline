@@ -1,0 +1,53 @@
+# Python, IDE and local environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+# Original reads and local references (not redistributed)
+data/
+reference/
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+# Binary alignments and VCF intermediates
+*.bam
+*.bai
+*.sam
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.tbi
+*.csi
+*.amb
+*.ann
+*.bwt
+*.pac
+*.sa
+*.fai
+logs/
+*.log
+*.tmp
+# Only curated output examples are committed
+results/**
+!results/variant_pipeline/
+!results/qc/
+results/variant_pipeline/*
+results/qc/*
+!results/variant_pipeline/variants.tsv
+!results/variant_pipeline/coverage_summary.tsv
+!results/variant_pipeline/coverage_by_position.tsv
+!results/variant_pipeline/low_coverage_regions.tsv
+!results/variant_pipeline/flagstat.txt
+!results/variant_pipeline/alignment_stats.txt
+!results/variant_pipeline/variant_stats.txt
+!results/variant_pipeline/enhanced_qc_report.html
+!results/qc/alignment_flagstat.txt
+!results/qc/alignment_qc_summary.csv
+!results/qc/mapping_summary.csv
+!results/qc/fastq_n_content_summary.csv
