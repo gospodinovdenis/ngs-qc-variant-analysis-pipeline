@@ -1,0 +1,62 @@
+name: NGS end-to-end reproducibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  synthetic-end-to-end:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ngs_pipeline_gospodinov
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: ngs_pipeline_gospodinov/requirements.txt
+
+      - name: Install bioinformatics tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bwa samtools bcftools
+          bwa 2>&1 | head -n 3 || true
+          samtools --version | head -n 1
+          bcftools --version | head -n 1
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Generate deterministic synthetic paired-end reads
+        run: python scripts/generate_ci_fixture.py
+
+      - name: Run original NGS variant pipeline
+        run: bash scripts/run_variant_pipeline.sh
+
+      - name: Compare VCF calls with synthetic ground truth
+        run: python scripts/verify_ci_variants.py
+
+      - name: Upload test outputs and QC report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-ngs-reproducibility-results
+          path: |
+            ngs_pipeline_gospodinov/ci_expected_variants.tsv
+            ngs_pipeline_gospodinov/results/variant_pipeline/flagstat.txt
+            ngs_pipeline_gospodinov/results/variant_pipeline/variant_stats.txt
+            ngs_pipeline_gospodinov/results/variant_pipeline/variants.tsv
+            ngs_pipeline_gospodinov/results/variant_pipeline/coverage_summary.tsv
+            ngs_pipeline_gospodinov/results/variant_pipeline/enhanced_qc_report.html
+            ngs_pipeline_gospodinov/results/variant_pipeline/bwa.log
+          if-no-files-found: warn
