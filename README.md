@@ -11,6 +11,24 @@ The project contains two independent workflows:
 
 The workflows demonstrate practical command-line bioinformatics, Python-based analysis, quality assessment, and reproducible reporting.
 
+## Verified reproducibility status (November 2026)
+
+The following GitHub Actions checks have **passed**:
+
+| Test | Scope | Result |
+|---|---|---|
+| [Python checks](.github/workflows/ci.yml) | Dependency installation, Python syntax, published-output regression tests and QC report tests | PASS |
+| [Synthetic end-to-end reproducibility](.github/workflows/ngs-reproducibility.yml) | Synthetic FASTQ through BWA/SAMtools/BCFtools, including recovery of expected synthetic variants | PASS |
+| [Original dataset reproduction](.github/workflows/ngs-original-dataset-reproduction.yml) | Manual run; original Zenodo bacterial inputs, checksums, pipeline rerun and normalized variant identity comparison | **PASS: 19/19 variants** |
+
+The original dataset comparison recovered **12 SNPs and 7 indel/complex records**, with **0 missing** and **0 unexpected** variants. Matching uses normalized chromosome, position, reference allele and alternate allele (case-insensitive); it does not require matching depth, quality scores, or all VCF fields. This is **computational reproduction against a committed baseline**, not independent biological truth-set validation.
+
+See [Phase 2 reproducibility and scientific interpretation](ngs_pipeline_gospodinov/docs/PHASE2_REPRODUCIBILITY_REPORT.md) for methods, coverage interpretation, limitations and verification instructions.
+
+**GitHub Actions:** Open the [Actions tab](https://github.com/gospodinovdenis/ngs-qc-variant-analysis-pipeline/actions) to inspect completed runs. The original dataset reproduction workflow is intentionally **manual-only** (`workflow_dispatch`), so it does not download source data on every push.
+
+> **Repository layout note:** The runnable project and its Python dependencies are under `ngs_pipeline_gospodinov/`. Run the commands in the sections below from that subdirectory (for example, `cd ngs_pipeline_gospodinov`), not the repository root. The Actions workflows are under the repository-root `.github/workflows/` directory.
+
 ## Technologies
 
 ### Bioinformatics tools
@@ -251,7 +269,7 @@ reference/
 
 The reference files and sequencing data must match the datasets used to generate the reported results.
 
-**Dataset source citations and redistribution terms should be added here before public release.**
+**Dataset provenance:** See the [project README](ngs_pipeline_gospodinov/README.md#data-provenance) and [reproducibility report](ngs_pipeline_gospodinov/docs/PHASE2_REPRODUCIBILITY_REPORT.md). Verify source-record licensing and redistribution conditions before redistributing input data.
 
 ## Running the Workflows
 
